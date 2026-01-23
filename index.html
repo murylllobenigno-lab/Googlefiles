@@ -33,15 +33,15 @@ function criarGrade(numeros) {
 const abaOperacoes = createElement('section', 'p-4 hidden');    
 abaOperacoes.innerHTML = `    
   <div class="flex justify-between items-center mb-4">    
-    <select id="analiseSelect" class="bg-gray-800 text-white px-3 py-2 rounded w-1/2">    
-      <option value="duzias">ANALISE DE ESPELHOS</option>    
-      <option value="colunas">ANALISE DE GEMEOS</option>    
-      <option value="cavalo">PRETO ALTO</option>    
-      <option value="linhas">2,4,6,8</option>    
-      <option value="cores">20,22,24,26</option>    
-      <option value="paridade">IRMAO DE COR PRETO</option>    
-      <option value="altos">IRMAOS DE COR VERMELHO</option>    
-    </select>    
+    <select id="analiseSelect" class="bg-gray-800 text-white px-3 py-2 rounded w-1/2">
+  <option value="espelhos">ESPELHOS</option>
+  <option value="gemeos">GEMEOS</option>
+  <option value="preto alto">PRETO ALTO</option>
+  <option value="padrao">PADRAO</option>
+  <option value="padrao2">PADRAO2</option>
+  <option value="irmaos de cor preto">IRMAOS DE COR PRETO</option>
+  <option value="irmaos de cor verm">IRMAOS DE COR VERM</option>
+</select>
     <button id="recolherBtn" class="bg-yellow-600 text-black font-bold px-4 py-2 rounded ml-2">↑ Recolher ↑</button>    
   </div>    
   <div id="gridContainer" class="transition-colors duration-300 p-2 rounded border border-gray-700 bg-gradient-to-br from-gray-900 to-black max-h-[300px] overflow-y-auto">    
@@ -65,14 +65,16 @@ function aplicarCores(tipo) {
   });    
 }    
 
-function atualizarGrade() {    
-  const grid = document.getElementById('grid');    
-  if (!grid) return;    
-  const dados = recolhido ? numerosData.slice(-10) : numerosData;    
-  grid.innerHTML = criarGrade(dados);    
-  const select = document.getElementById('analiseSelect');    
-  if (select) aplicarCores(select.value);    
-}    
+function atualizarGrade() {
+  const grid = document.getElementById('grid');
+  if (!grid) return;
+
+  const dados = recolhido ? numerosData.slice(-10) : numerosData;
+  grid.innerHTML = criarGrade(dados);
+
+  const select = document.getElementById('analiseSelect');
+  if (select) aplicarCores(select.value);
+}
 
 const abaInicio = createElement('section', 'p-4', `
 
@@ -245,30 +247,19 @@ let analises = {};
 // =========================
 // CARREGAR JSON HOSPEDADO
 // =========================
-fetch("https://murylllobenigno-lab.github.io/Googlefiles/dados.json")
-  .then(res => res.json())
-  .then(data => {
+fetch('https://murylllobenigno-lab.github.io/Googlefiles/dados.json')
+  .then(r => r.json())
+  .then(dados => {
+    numerosData = dados.numerosData || [];
+    analises = dados.analises || {};
+    jogadasAlvo = dados.jogadasAlvo || {};
 
-    numerosData = data.numerosData || [];
-    jogadasAlvo = data.jogadasAlvo || {};
-    analises = data.analises || {};
-
-    console.log("✅ JSON carregado com sucesso");
-    console.log("Último número:", numerosData[numerosData.length - 1]);
-
-    atualizarGrade();
-
+    atualizarGrade();        // 👈 DESENHA A GRADE
+    aplicarCores('duzias');  // 👈 COLORAÇÃO INICIAL
   })
   .catch(err => {
     console.error("❌ Erro ao carregar JSON:", err);
   });
-
-// =========================
-// FUNÇÃO CORRIGIDA
-// =========================
-function pegarUltimos5Operacoes(){
-  return numerosData.slice(-5);
-}
 
 </script>  </body>
 
