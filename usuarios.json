@@ -1,3 +1,36 @@
 {
-  "senhaMuryllo": "1234"
+  "usuarios": [
+    {
+      "user": "murilo",
+      "senha": "1234"
+    },
+    {
+      "user": "admin",
+      "senha": "9999"
+    },
+    {
+      "user": "benigno",
+      "senha": "1212"
+    },
+    {
+      "user": "pato",
+      "senha": "9988"
+    },
+    {
+      "user": "santos",
+      "senha": "0004"
+    },
+    {
+      "user": "kelv",
+      "senha": "9129"
+    },
+    {
+      "user": "breno",
+      "senha": "1344"
+    },
+    {
+      "user": "castro",
+      "senha": "8769"
+    }
+  ]
 }
