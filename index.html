@@ -123,12 +123,7 @@ const abaInicio = createElement('section', 'p-4', `
 const abaOperacoes = createElement('section', 'p-4 hidden');
 abaOperacoes.innerHTML = `
   <div class="flex justify-between items-center mb-4">
-    <select id="analiseSelect" class="bg-gray-800 text-white px-3 py-2 rounded w-1/2">
-      <option value="espelhos">ESPELHOS</option>
-      <option value="gemeos">GEMEOS</option>
-      <option value="preto alto">PRETO ALTO</option>
-      <option value="padrao">PADRAO</option>
-    </select>
+    <select id="analiseSelect" class="bg-gray-800 text-white px-3 py-2 rounded w-1/2"></select>
     <button id="recolherBtn" class="bg-yellow-600 text-black font-bold px-4 py-2 rounded ml-2">↑ Recolher ↑</button>
   </div>
   <div id="gridContainer" class="transition-colors duration-300 p-2 rounded border border-gray-700 bg-gradient-to-br from-gray-900 to-black max-h-[300px] overflow-y-auto">
@@ -260,7 +255,7 @@ async function confirmarLogin() {
 
   document.getElementById('loginModal').classList.add('hidden'); // esconde modal
   atualizarGrade();        // desenha a grade
-  aplicarCores('duzias');  // coloração inicial
+  aplicarCores(document.getElementById('analiseSelect').value);  // coloração inicial
 }
 
 // =========================
@@ -272,7 +267,22 @@ function carregarUsuarios() {
     .then(dados => { usuarios = dados.usuarios || []; })
     .catch(err => console.error("❌ Erro ao carregar usuários:", err));
 }
+function preencherAnalises() {
+  const select = document.getElementById('analiseSelect');
+  if (!select) return;
 
+  select.innerHTML = '';
+
+  Object.keys(analises).forEach((key, i) => {
+    const option = document.createElement('option');
+    option.value = key;
+    option.textContent = key.toUpperCase();
+    if (i === 0) option.selected = true;
+    select.appendChild(option);
+  });
+
+  aplicarCores(select.value);
+}
 carregarUsuarios();
 
 // =========================
@@ -299,13 +309,14 @@ atualizarAbas('inicio');
 fetch('https://murylllobenigno-lab.github.io/Googlefiles/dados.json')
   .then(r=>r.json())
   .then(dados=>{
-    numerosData = dados.numerosData||[];
-    analises = dados.analises||{};
-    jogadasAlvo = dados.jogadasAlvo||{};
+    numerosData = dados.numerosData || [];
+    analises = dados.analises || {};
+    jogadasAlvo = dados.jogadasAlvo || {};
+
     atualizarGrade();
+    preencherAnalises(); // 👈 ESSENCIAL
   })
   .catch(err=>console.error("❌ Erro ao carregar JSON:",err));
-
 </script>
 </body>
 </html>
