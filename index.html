@@ -125,7 +125,16 @@ abaOperacoes.innerHTML = `
   </div>
   <div id="gridContainer" class="transition-colors duration-300 p-2 rounded border border-gray-700 bg-gradient-to-br from-gray-900 to-black max-h-[300px] overflow-y-auto">
     <div id="grid" class="grid grid-cols-9 gap-1"></div>
-  </div>
+  </div><div class="mt-3">
+  <select id="roletaSelectBottom" class="w-full bg-gray-800 text-white px-3 py-2 rounded">
+    <option value="">Escolher roleta</option>
+    <option value="immersive">Immersive</option>
+    <option value="brasileira">Brasileira</option>
+    <option value="xxxtreme">XXXTreme</option>
+    <option value="auto roulette">Auto Roulette</option>
+    <option value="vip roulette">VIP Roulette</option>
+  </select>
+</div>
 `;
 
 // =========================
@@ -136,7 +145,7 @@ const abaMuryllo = createElement('section', 'p-4 hidden', `
     <label class="block mb-2 text-sm text-gray-300">
       Últimos números (separados por vírgula)
     </label>
-    <input id="ultimosAlvo" type="text" placeholder="Ex: 20,30,4" class="w-full p-2 rounded bg-black border border-gray-700 text-white mb-3"/>
+    <input id="ultimosAlvo" type="text" placeholder="0" class="w-full p-2 rounded bg-black border border-gray-700 text-white mb-3"/>
     <div id="resultadoAlvo" class="mt-4 text-center"></div>
   </div>
 `);
@@ -150,7 +159,7 @@ const abaMuryllo = createElement('section', 'p-4 hidden', `
 );
 
 iframeArea.innerHTML = `
-  <div class="w-full h-[525px] rounded-xl overflow-hidden border-2 border-green-500 bg-black">
+  <div class="w-full h-[530px] rounded-xl overflow-hidden border-2 border-green-500 bg-black">
     <iframe
       id="roletaFrame"
       class="w-full h-full border-0"
@@ -164,7 +173,7 @@ app.appendChild(iframeArea);
 const roletaBtnWrapper = createElement('div', 'fixed bottom-20 left-0 right-0 px-4 z-10');
 const roletaBtn = createElement(
   'button',
-  'block w-full bg-green-600 text-center text-white py-3 rounded-lg font-semibold shadow-lg',
+  'block w-full bg-green-550 text-center text-white py-3 rounded-lg font-semibold shadow-lg',
   'ABRIR ROLETA'
 );
 
@@ -347,6 +356,38 @@ fetch('https://murylllobenigno-lab.github.io/Googlefiles/dados.json')
     preencherAnalises(); // 👈 ESSENCIAL
   })
   .catch(err=>console.error("❌ Erro ao carregar JSON:",err));
+  fetch('https://murylllobenigno-lab.github.io/Googlefiles/roletas.json')
+  .then(r => r.json())
+  .then(data => {
+    dadosPorRoleta = data;
+    // inicializa com a primeira roleta
+    roletaAtual = Object.keys(dadosPorRoleta)[0];
+    numerosData = dadosPorRoleta[roletaAtual] || [];
+    atualizarGrade();
+    preencherRoletas(); // função que popula o select
+  })
+  .catch(err => console.error("Erro ao carregar roletas:", err));
+  function preencherRoletas() {
+  const select = document.getElementById('roletaSelectBottom');
+  if (!select) return;
+
+  select.innerHTML = '<option value="">Escolher roleta</option>';
+  Object.keys(dadosPorRoleta).forEach(nome => {
+    const opt = document.createElement('option');
+    opt.value = nome;
+    opt.textContent = nome.toUpperCase();
+    select.appendChild(opt);
+  });
+}
+  document.addEventListener('change', e => {
+  if (e.target.id === 'roletaSelectBottom') {
+    const nome = e.target.value;
+    if (!dadosPorRoleta[nome]) return;
+
+    numerosData = dadosPorRoleta[nome];
+    atualizarGrade(); // atualiza histórico
+  }
+});
 </script>
 </body>
 </html>
