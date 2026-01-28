@@ -155,15 +155,15 @@ const abaMuryllo = createElement('section', 'p-4 hidden', `
 // =========================
   const iframeArea = createElement(
   'div',
-  'fixed bottom-36 left-0 right-0 px-4 z-10 hidden'
+  'fixed inset-0 pt-40 pb-20 px-2 z-20 hidden'
 );
 
 iframeArea.innerHTML = `
-  <div class="w-full h-[530px] rounded-xl overflow-hidden border-2 border-green-500 bg-black">
+  <div class="w-full h-full rounded-xl overflow-hidden border-2 border-green-500 bg-black">
     <iframe
       id="roletaFrame"
-      class="w-full h-full border-0"
-      src=""
+      class="w-full h-full border-0 block"
+      src="https://7games.bet.br/pb/live-casino/home/-1/All?categoryName=all"
       allowfullscreen>
     </iframe>
   </div>
@@ -201,10 +201,8 @@ function atualizarAbas(ativa){
   abaOperacoes.classList.add('hidden');
   abaMuryllo.classList.add('hidden');
 
-  iframeArea.classList.add('hidden'); // 🔴 ESCONDE IFRAME AO TROCAR ABA
-  document.getElementById('roletaFrame').src = '';
-
-  roletaBtnWrapper.classList.add('hidden'); // 🔴 ESCONDE BOTÃO
+  iframeArea.classList.add('hidden'); // só esconde
+  roletaBtnWrapper.classList.add('hidden');
 
   btnInicio.classList.remove('text-yellow-400');
   btnOperacoes.classList.remove('text-yellow-400');
@@ -225,7 +223,8 @@ function atualizarAbas(ativa){
     case 'muryllo':
       abaMuryllo.classList.remove('hidden');
       btnMuryllo.classList.add('text-yellow-400');
-      roletaBtnWrapper.classList.remove('hidden'); // ✅ MOSTRA BOTÃO
+
+      iframeArea.classList.remove('hidden'); // 👈 MOSTRA A ROLETA
       processarAlvo();
       break;
   }
