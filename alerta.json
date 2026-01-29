@@ -1,0 +1,30 @@
+{
+  "status": "ativo",
+
+  "alertaInicio": {
+    "ativo": true,
+    "texto": "🚨 SINAL CONFIRMADO 🚨"
+  },
+
+  "alertaAtual": {
+    "ativo": true,
+    "tipo": "zona",
+    "prioridade": 3,
+    "texto": "🔥 ZONA 21 ATIVA 🔥"
+  },
+
+  "alertas": {
+    "zona": {
+      "ativo": true,
+      "texto": "🔥 ZONA 11 ATIVA 🔥"
+    },
+    "numeros": {
+      "ativo": false,
+      "texto": ""
+    },
+    "terminal": {
+      "ativo": false,
+      "texto": ""
+    }
+  }
+}
