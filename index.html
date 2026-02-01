@@ -25,7 +25,41 @@
 </div>
 
 <script>
+  // 🎰 APIs DAS ROLETAS
+const roletaAPIs = {
+  immersive: "https://api.casinoscores.com/svc-evolution-game-events/api/immersiveroulette?page=0&size=200&sort=data.settledAt,desc&duration=6",
+  "auto roulette": "https://api.casinoscores.com/svc-evolution-game-events/api/autoroulette?page=0&size=200&sort=data.settledAt,desc&duration=6"
+};async function carregarNumerosAPI(nome) {
+  if (!roletaAPIs[nome]) return;
+
+  try {
+    const r = await fetch(roletaAPIs[nome]);
+    const data = await r.json();
+
+    const numeros = [];
+
+    data.forEach(rodada => {
+      try {
+        const num = rodada.data.result.outcome.number;
+        numeros.push(num);
+      } catch {}
+    });
+
+    if (numeros.length) {
+      numerosData = numeros;
+
+      atualizarGrade();
+      atualizarPainelZonas();
+      atualizarQuadranteMuryllo();
+      processarAlvo();
+    }
+
+  } catch (err) {
+    console.error("Erro API:", err);
+  }
+}
 const app = document.getElementById('app');
+  carregarNumerosAPI("immersive");
 
 // =========================
 // VARIÁVEIS GLOBAIS
@@ -202,7 +236,7 @@ const abaMuryllo = createElement('section', 'p-4 hidden', `
 // BOTAO FALAR COM ADM
 // =========================
  const butonBtnWrapper = createElement('div', 'fixed bottom-20 left-0 right-0 px-4 z-10');
-const butonBtn = createElement('a', 'block bg-blue-900 text-center text-white py-1 rounded-lg font-semibold shadow-lg hover: transition', 'FALAR COM ADM');
+const butonBtn = createElement('a', 'block bg-blue-900 text-center text-white py-3 rounded-lg font-semibold shadow-lg hover: transition', 'FALAR COM ADM');
 butonBtn.href = 'https://www.instagram.com/murylllo_benygno?igsh=MW4wNG9tdGtteTFxdA==';
 butonBtn.target = '_blank';
 butonBtnWrapper.appendChild(butonBtn);
@@ -543,39 +577,31 @@ fetch('https://murylllobenigno-lab.github.io/Googlefiles/dados.json')
   const select = document.getElementById('roletaSelectBottom');
   if (!select) return;
 
-  select.innerHTML = '<option value="">Escolher roleta</option>';
-  Object.keys(dadosPorRoleta).forEach(nome => {
-    const opt = document.createElement('option');
-    opt.value = nome;
-    opt.textContent = nome.toUpperCase();
-    select.appendChild(opt);
-  });
+  select.innerHTML = `
+    <option value="immersive">Immersive</option>
+    <option value="auto roulette">Auto Roulette</option>
+  `;
 }
   document.addEventListener('change', e => {
   if (e.target.id === 'roletaSelectBottom') {
-    const nome = e.target.value;
-    if (!dadosPorRoleta[nome]) return;
+    let nome = e.target.value.toLowerCase();
+    if (!roletaAPIs[nome]) nome = "immersive";
 
-    numerosData = dadosPorRoleta[nome];
-
-    atualizarGrade();
-    atualizarPainelZonas();
-    atualizarQuadranteMuryllo(); // 🔥 atualiza painel Muryllo
-    processarAlvo();             // 🎯 atualiza alvos
+    carregarNumerosAPI(nome);
   }
 });
   fetch('https://murylllobenigno-lab.github.io/Googlefiles/roletas.json')
   .then(r => r.json())
   .then(data => {
-  dadosPorRoleta = data;
-  roletaAtual = Object.keys(dadosPorRoleta)[0];
-  numerosData = dadosPorRoleta[roletaAtual] || [];
+    dadosPorRoleta = data;
+    roletaAtual = Object.keys(dadosPorRoleta)[0];
+    numerosData = dadosPorRoleta[roletaAtual] || [];
 
-  atualizarGrade();
-  atualizarPainelZonas();
-  atualizarQuadranteMuryllo(); 
-  processarAlvo();             
-  preencherRoletas();
+    atualizarGrade();
+    atualizarPainelZonas();
+    atualizarQuadranteMuryllo(); 
+    processarAlvo();             
+    preencherRoletas();
 })
   .catch(err => console.error("Erro ao carregar roletas:", err));
   function atualizarQuadranteMuryllo(){
