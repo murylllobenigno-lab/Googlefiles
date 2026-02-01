@@ -60,7 +60,12 @@ const roletaAPIs = {
 }
 const app = document.getElementById('app');
   carregarNumerosAPI("immersive");
-
+// Atualizar números automaticamente a cada 5 segundos
+setInterval(() => {
+  if(roletaAtual && roletaAPIs[roletaAtual]) {
+    carregarNumerosAPI(roletaAtual);
+  }
+}, 10000); // 10000ms = 5s
 // =========================
 // VARIÁVEIS GLOBAIS
 // =========================
