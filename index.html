@@ -596,14 +596,8 @@ fetch('https://murylllobenigno-lab.github.io/Googlefiles/dados.json')
   const r = analisarZonas();  
   if(!r) return;  
   
-  // Zona quente  
+// Zona quente  
   document.getElementById("zonaQuentePainel").textContent = r.zonaQuente ? r.zonaQuente[0] : "---";
-
-  // Zona fria
-  document.getElementById("zonaFriaPainel").textContent = r.zonaFria ? r.zonaFria[0] : "---";
-
-  // Números quentes
- document.getElementById("zonaQuentePainel").textContent = r.zonaQuente ? r.zonaQuente[0] : "---";
 
   // Zona fria
   document.getElementById("zonaFriaPainel").textContent = r.zonaFria ? r.zonaFria[0] : "---";
