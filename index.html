@@ -228,9 +228,8 @@ butonBtn.href = 'https://www.instagram.com/murylllo_benygno?igsh=MW4wNG9tdGtteTF
 butonBtn.target = '_blank';  
 butonBtnWrapper.appendChild(butonBtn);  
   // =========================  
-// inframe  
-// =========================  
-  <!-- IFRAME ROLETA -->  
+// IFRAME ROLETA  
+// ========================= 
 const iframeArea = createElement(  
   'div',  
   'fixed left-0 right-0 bottom-0 top-20 z-40 bg-black hidden'  
@@ -241,7 +240,7 @@ iframeArea.innerHTML = `
     <iframe  
   id="roletaFrame"  
   class="w-full h-full border-0 block"  
-  allowfullscreen>  
+  allowscreen>  
 </iframe>  
   </div>  
 `;  
@@ -622,7 +621,9 @@ fetch('https://murylllobenigno-lab.github.io/Googlefiles/dados.json')
   });
 
   const container = document.getElementById("cardsZonas");
+if(container) {
   container.innerHTML = "";
+}
 
   Object.entries(cont).forEach(([zona,qtd])=>{
     let cor = "bg-slate-800 border-slate-600";
@@ -642,7 +643,7 @@ setInterval(() => {
   if(roletaAtual && roletaAPIs[roletaAtual]) {
     carregarNumerosAPI(roletaAtual);
   }
-}, 10000); // 10000ms = 6s
+}, 6000); // 6000ms = 6s
 </script>
 </body>
 </html>
