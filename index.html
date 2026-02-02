@@ -634,8 +634,12 @@ fetch('https://murylllobenigno-lab.github.io/Googlefiles/dados.json')
       </div>
     `;
   });
-
-
+// Atualizar números automaticamente a cada 10 segundos
+setInterval(() => {
+  if(roletaAtual && roletaAPIs[roletaAtual]) {
+    carregarNumerosAPI(roletaAtual);
+  }
+}, 10000); // 10000ms = 6s
 </script>
 </body>
 </html>
