@@ -75,6 +75,7 @@ function createElement(tag, className = '', content = '') {
   if(className) el.className = className;  
   if(content) el.innerHTML = content;  
   return el;  
+  if(!zonasData || !Object.keys(zonasData).length) return;
 }  
   
 function pegarUltimos5Operacoes(){  
@@ -230,10 +231,10 @@ butonBtnWrapper.appendChild(butonBtn);
   // =========================  
 // IFRAME ROLETA  
 // ========================= 
-const iframeArea = createElement(  
-  'div',  
-  'fixed left-0 right-0 bottom-0 top-20 z-40 bg-black hidden'  
-);  
+const iframeArea = createElement(
+  'div',
+  'fixed left-2 right-2 bottom-24 top-32 z-40 bg-black hidden rounded-xl'
+);
   
 iframeArea.innerHTML = `  
   <div class="w-full h-full rounded-xl overflow-hidden border-2 border-black bg-black">  
@@ -380,10 +381,10 @@ function atualizarPainelZonas(){
     numeroQuenteQtd.textContent = '0';  
   }  
 }  
-/* =========================  
-   APPEND  
-========================= */  
-app.append(abaInicio,abaOperacoes,abaMuryllo,nav);  
+  /* =========================
+   APPEND
+========================= */
+app.append(abaInicio,abaOperacoes,abaMuryllo,nav);
 /* mapear ids */  
 zonaQuenteNome=document.getElementById('zonaQuenteNome');  
 zonaQuenteQtd=document.getElementById('zonaQuenteQtd');  
@@ -530,9 +531,6 @@ nav.appendChild(btnInicio);
 nav.appendChild(btnOperacoes);  
 nav.appendChild(btnMuryllo);  
 app.appendChild(butonBtnWrapper);  
-app.appendChild(abaInicio);  
-app.appendChild(abaOperacoes);  
-app.appendChild(abaMuryllo);  
 app.appendChild(roletaBtnWrapper);  
 app.appendChild(nav);  
   
@@ -572,10 +570,11 @@ fetch('https://murylllobenigno-lab.github.io/Googlefiles/dados.json')
   if (e.target.id === 'roletaSelectBottom') {  
     let nome = e.target.value.toLowerCase();  
     if (!roletaAPIs[nome]) nome = "immersive";  
-  
+
+    roletaAtual = nome; 
     carregarNumerosAPI(nome);  
   }  
-});  
+});
   fetch('https://murylllobenigno-lab.github.io/Googlefiles/roletas.json')  
   .then(r => r.json())  
   .then(data => {  
@@ -629,7 +628,7 @@ if(container) {
     let cor = "bg-slate-800 border-slate-600";
     if(r.zonaQuente && zona === r.zonaQuente[0]) cor = "bg-red-800 border-red-500";
     if(r.zonaFria && zona === r.zonaFria[0]) cor = "bg-blue-800 border-blue-500";
-
+    
     container.innerHTML += `
       <div class="min-w-[90px] p-2 rounded-lg border ${cor} text-center">
         <div class="text-yellow-400 font-bold">${zona}</div>
@@ -637,7 +636,7 @@ if(container) {
       </div>
     `;
   });
-}
+  }
   // Atualizar números automaticamente a cada 10 segundos
 setInterval(() => {
   if(roletaAtual && roletaAPIs[roletaAtual]) {
