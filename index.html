@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Teste dados.json</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="background:black;color:lime;font-family:Arial;padding:20px;">
+
+  <h2>📡 Teste de leitura do dados.json</h2>
+  <pre id="saida">Carregando...</pre>
+
+  <script>
+    fetch('https://murylllobenigno-lab.github.io/Googlefiles/zonas.json')
+      .then(res => {
+        if (!res.ok) throw new Error('Erro ao carregar JSON');
+        return res.json();
+      })
+      .then(data => {
+        console.log('JSON carregado:', data);
+        document.getElementById('saida').textContent =
+          JSON.stringify(data, null, 2);
+      })
+      .catch(err => {
+        document.getElementById('saida').textContent =
+          '❌ Erro: ' + err.message;
+        console.error(err);
+      });
+  </script>
+
+</body>
+</html>
